@@ -1,0 +1,260 @@
+#
+# Data settings
+#
+
+Database:
+  mysql: false
+  hostname: "localhost"
+  port: 3306
+  database: "database"
+  username: "root"
+  password: "password"
+  table: "stbans"
+
+#
+# Utilities
+#
+# How to use the temp?
+# To use the temp punishments type this:
+#
+# Example in ban command
+# /tempban (Nick) (Time) (Time type) (Reason)
+#
+# The (Nick) is the nickname of the player
+# The (Time) is the duration of the punishment
+# The (Time type) is the type of the time:
+#
+# Use "s" if the time is seconds
+# Use "m" if the time is minutes
+# Use "h" if the time is hours
+# Use "d" if the time is days
+#
+# The (Reason) is the reason of the punishment
+#
+# Example (If i make a punish for 10 minutes):
+#
+# /tempban Stanic 10 m Reason
+#
+#
+# Placeholders:
+#
+# {nick} to player nick
+# {staff} to staff nick
+# {type} to punishment type
+# {reason} to punishment reason
+# {date} to punishment date
+# {hour} to punishment hour
+# {time} to punishment duration
+# {id} to punishment id
+# {active} to verify if the punishment is active
+#
+#
+# Permissions:
+#
+# stbans.bancmd - Allow to use the bans commands (Ban and tempban)
+# stbans.mutecmd - Allow to use the mute commands (Mute and tempmute)
+# stbans.revokecmd - Allow to use the revoke commands (unmute and unban)
+# stbans.warncmd - Allow to use the warn command
+# stbans.reportcmd - Allow to use the report command
+# stbans.kickcmd - Allow to use the kick command
+# stbans.reportadm - Allow to view new reports and use the reports command
+# stbans.verifycmd - Allow to use the verify command
+#
+
+#
+# Discord integration settings
+#
+Discord:
+  #Enable integration?
+  enable: true
+  #
+  # The things below will only work if integration is enabled
+  #
+  #token of the bot
+  token: ""
+  #Playing game of the bot
+  game: ""
+  #Channels to send the plugin messages
+  channels:
+    #Channel to send the punish alert
+    punishChannel: ""
+    punishMessage:
+      title: "Punish"
+      body: "**A new punish has been created** @n@nNick: {nick} @n@nReason: {reason} @nStaff: {staff} @nDate: {date} | {hour} @nDuration: {time} @n@nID: {id} @nType: {type}"
+    #Channel to send the reports alert
+    enableReport: true
+    #Channel to send the report alert | If report alert is enabled
+    reportsChannel: ""
+    reportMessage:
+      title: "Report"
+      body: "**A new report has been created** @n@nNick: {nick} @nReason: {reason}"
+    #Enable warn alert?
+    enableWarn: true
+    #Channel to send the warn alert | If warn alert is enabled
+    warnChannel: ""
+    warnMessage:
+      title: "Warn"
+      body: "**A new warn has been created** @n@nNick: {nick} @nReason: {reason} @nStaff: {staff}"
+    #Enable kick alert?
+    enableKick: true
+    #Channel to send the kick alert | If kick alert is enabled
+    kickChannel: ""
+    kickMessage:
+      title: "Kick"
+      body: "**A new warn has been created** @n@nNick: {nick} @nReason: {reason}"
+
+#
+# Principal settings of the plugin
+#
+Config:
+  #Enable the application integration?
+  enableApp: true
+  appConnectPort: 4567
+  #Time format messages
+  timeFormat:
+    #Type of times
+    seconds: "s"
+    minutes: "m"
+    hours: "h"
+    days: "d"
+    #The permanent message
+    permanent: "Permanent"
+    #Type of the days
+    sunday: "Domingo"
+    monday: "Segunda-feira"
+    tuesday: "Terça-feira"
+    wednesday: "Quarta-feira"
+    thursday: "Quinta-feira"
+    friday: "Sexta-feira"
+    saturday: "Sábado"
+  #Active message
+  isActive: "Yes"
+  isNotActive: "No"
+  finalized: "Expirada"
+  #Enable a limit of warns per player?
+  warnLimit: true
+  #Amount of warns to limit
+  warnLimiteNumber: 5
+  #If warn limit is enabled, this actions will be executed when the limit is hit
+  warnActions:
+    - "kick {nick} You're kicked by limit of warn"
+  #
+  # Alerts settings
+  #
+  #Punish
+  alertPunishBroadcast: true
+  alertPunishDiscord: true
+  #Warn
+  alertWarnBroadcast: true
+  alertWarnDiscord: true
+  #Kick
+  alertKickBroadcast: true
+  alertKickDiscord: true
+  #Commands to block when the player is muted
+  blockedCommands:
+    - "g"
+    - "l"
+
+#
+# Menus settings
+#
+Menus:
+  #Reports menu
+  reports:
+    #Name of the menu
+    name: "&8Reports"
+    #Itens in menu
+    itens:
+      #The report show item | Don't remove this
+      reportItem:
+        #Item name
+        name: "&b{nick}"
+        #Item lore
+        lore:
+          - ""
+          - "&fReason: &7{reason}"
+          - ""
+        #Item id
+        id: 1
+        #Item data
+        data: 0
+        #The skull owner | Don't remove this | If item is not a head set to null
+        skullOwner: "null"
+  #Historic menu
+  historic:
+    #Name of the menu
+    name: "&8Historic"
+    #Itens in menu
+    itens:
+      #The historic show item | Don't remove this
+      historicItem:
+        #Item name
+        name: "&b{date} &8| &b{hour}"
+        #Item lore
+        lore:
+          - ""
+          - "&fType: &7{type}"
+          - "&fID: &7{id}"
+          - "&fActive: &7{active}"
+          - ""
+          - "&fStaff: &7{staff}"
+          - "&fTime: &7{time}"
+          - ""
+          - "&fReason: &7{reason}"
+          - ""
+        #Item id
+        id: 1
+        #Item data
+        data: 0
+        #The skull owner | Don't remove this | If item is not a head set to null
+        skullOwner: "null"
+#
+# Messages
+#
+Messages:
+  #
+  # Errors messages
+  #
+  noPerm: "&cYou don't have permission to use this"
+  usageBanIp: "&cIncorrect usage @n@n&4Type: &c/tempbanip (Nick) (Time) (Time type) (Reason)"
+  usageBan: "&cIncorrect usage @n@n&4Type: &c/ban (Nick) (Reason)"
+  usageTempban: "&cIncorrect usage @n@n&4Type: &c/tempban (Nick) (Time) (Time type) (Reason)"
+  usageUnban: "&cIncorrect usage @n@n&4Type: &c/unban (id)"
+  usageMute: "&cIncorrect usage @n@n&4Type: &c/mute (Nick) (Reason)"
+  usageTempmute: "&cIncorrect usage @n@n&4Type: &c/tempmute (Nick) (Time) (Time type) (Reason)"
+  usageUnmute: "&cIncorrect usage @n@n&4Type: &c/unmute (id)"
+  usageWarn: "&cIncorrect usage @n@n&4Type: &c/warn (Nick) (Reason)"
+  usageKick: "&cIncorrect usage @n@n&4Type: &c/kick (Nick) (Reason)"
+  usageReport: "&cIncorrect usage @n@n&4Type: &c/report (Nick) (Reason)"
+  usageVerify: "&cIncorrect usage @n@n&4Type: &c/verify (Nick) &8- &7Optional: &c(Filter) @nUse: 1 to filter only actives"
+  playerOffline: "&cPlayer offline"
+  noHistoric: "&cThis player don't has historic"
+  noReports: "&cNot exists reports to view"
+  numbersOnly: "&cUse numbers only"
+
+  #
+  # Success messages
+  #
+  warnPlayer: "&cYou got a warn! @n@n&4Reason: &7{reason}"
+  warnStaff: "&cThe player &4{nick} &fwarned with success"
+  playerReported: "&aThe player {nick} reported with success"
+  playerKicked: "&aThe player {nick} has been kicked with success"
+
+  #
+  # In-game messages
+  #
+  playerPunishBroadcast: "@n &aThe player &f{nick} &ahas been punished by &f{staff} for: @n&7{reason} @n"
+  playerKickedBroadcast: "@n &aThe player &f{nick} &ahas been kicked by &f{staff} for: @n&7{reason} @n"
+  playerWarnedBroadcast: "@n &aThe player &f{nick} &ahas been warned by &f{staff} for: @n&7{reason} @n"
+  playerReportedStaff: "@n &aThe player &f{nick} &ahas been reported for: @n&7{reason} @n"
+  punishRepealed: "&cThe punish with id &4{id} &chas repealed"
+  punishmentAppliedStaff: "&4You applied an punish in &4{nick} @n@nReason: &f{reason} @n&cStaff: &f{staff} @n&cDate: &f{date} &8| &f{hour} @n&cDuration: &f{time} @n@n&eID: &b{id} @n&eType: &b{type}"
+  muteMessage: "&4&lST-BANS @n&4You're muted! @n@nReason: &f{reason} @n&cStaff: &f{staff} @n&cDate: &f{date} &8| &f{hour} @n&cDuration: &f{time} @n@n&eID: &b{id}"
+  punishRepealedChat: "&4&lST-BANS @n &4Punish @n&fYour punish with id: {id} has repealed"
+
+  #
+  #Connect listener
+  #
+  punishRepealedKick: "&4&lST-BANS @n &4Punish @n&fYour punish with id: {id} has repealed"
+  kickMessage: "&4&lST-BANS @n &4You're kicked! @n@n&cReason: &f{reason}"
+  kickBanned: "&4&lST-BANS @n &4You're banned! @n@n&cReason: &f{reason} @n&cStaff: &f{staff} @n&cDate: &f{date} &8| &f{hour} @n&cDuration: &f{time} @n@n&eDo you think the ban as wrong? Create a review using ID: &b{id}"

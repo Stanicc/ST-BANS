@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#171F24"
+    tools:context=".view.punish.PunishActivity">
+
+    <EditText
+        android:id="@+id/nickText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="130dp"
+        android:textColorHint="#498DF0"
+        android:ems="10"
+        android:selectAllOnFocus="true"
+        android:inputType="textPersonName"
+        android:hint="Nick"
+        android:backgroundTint="#FFFFFF"
+        android:textColor="#498DF0"
+        android:shadowColor="#FFFFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/stafferText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:ems="10"
+        android:textColorHint="#498DF0"
+        android:selectAllOnFocus="true"
+        android:inputType="textPersonName"
+        android:hint="Staffer"
+        android:textColor="#498DF0"
+        android:backgroundTint="#FFFFFF"
+        android:shadowColor="#FFFFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nickText" />
+
+    <EditText
+        android:id="@+id/reasonText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:textColorHint="#498DF0"
+        android:ems="10"
+        android:selectAllOnFocus="true"
+        android:inputType="textPersonName"
+        android:hint="Motivo"
+        android:textColor="#498DF0"
+        android:backgroundTint="#FFFFFF"
+        android:shadowColor="#FFFFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/stafferText" />
+
+    <EditText
+        android:id="@+id/timeText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:textColorHint="#498DF0"
+        android:ems="10"
+        android:selectAllOnFocus="true"
+        android:inputType="textPersonName"
+        android:hint="Duração"
+        android:textColor="#498DF0"
+        android:backgroundTint="#FFFFFF"
+        android:shadowColor="#FFFFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/reasonText" />
+
+    <EditText
+        android:id="@+id/timeUnitText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:textColorHint="#498DF0"
+        android:ems="10"
+        android:selectAllOnFocus="true"
+        android:inputType="textPersonName"
+        android:hint="Tipo de tempo"
+        android:textColor="#498DF0"
+        android:backgroundTint="#FFFFFF"
+        android:shadowColor="#FFFFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/timeText" />
+
+    <Button
+        android:id="@+id/applyButton"
+        android:onClick="onClickInApply"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="80dp"
+        android:text="Aplicar"
+        android:textColor="#FFFFFFFF"
+        android:background="@drawable/button_style"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Switch
+        android:id="@+id/time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="70dp"
+        android:text="Temporária   "
+        android:textColor="#FFFFFF"
+        android:theme="@style/switchStyle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/radioGroup"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="200dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="160dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <RadioButton
+            android:id="@+id/banButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:buttonTint="#3EAEFF"
+            android:background="@drawable/checkbutton_style"
+            android:text="Banimento"
+            android:textColor="#498DF0" />
+
+        <RadioButton
+            android:id="@+id/muteButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="30dp"
+            android:buttonTint="#3EAEFF"
+            android:background="@drawable/checkbutton_style"
+            android:text="Silenciamento"
+            android:textColor="#498DF0" />
+    </RadioGroup>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
