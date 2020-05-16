@@ -150,6 +150,8 @@ Config:
   #Kick
   alertKickBroadcast: true
   alertKickDiscord: true
+  #Report
+  delayToReportAgain: 60 # In seconds
   #Commands to block when the player is muted
   blockedCommands:
     - "g"
@@ -216,12 +218,15 @@ Messages:
   # Errors messages
   #
   noPerm: "&cYou don't have permission to use this"
-  usageBanIp: "&cIncorrect usage @n@n&4Type: &c/tempbanip (Nick) (Time) (Time type) (Reason)"
+  usageBanIp: "&cIncorrect usage @n@n&4Type: &c/banip (Nick) (Reason)"
   usageBan: "&cIncorrect usage @n@n&4Type: &c/ban (Nick) (Reason)"
   usageTempban: "&cIncorrect usage @n@n&4Type: &c/tempban (Nick) (Time) (Time type) (Reason)"
+  usageTempbanIp: "&cIncorrect usage @n@n&4Type: &c/tempbanip (Nick) (Time) (Time type) (Reason)"
   usageUnban: "&cIncorrect usage @n@n&4Type: &c/unban (id)"
   usageMute: "&cIncorrect usage @n@n&4Type: &c/mute (Nick) (Reason)"
+  usageMuteIp: "&cIncorrect usage @n@n&4Type: &c/muteip (Nick) (Reason)"
   usageTempmute: "&cIncorrect usage @n@n&4Type: &c/tempmute (Nick) (Time) (Time type) (Reason)"
+  usageTempmuteIp: "&cIncorrect usage @n@n&4Type: &c/tempmuteip (Nick) (Time) (Time type) (Reason)"
   usageUnmute: "&cIncorrect usage @n@n&4Type: &c/unmute (id)"
   usageWarn: "&cIncorrect usage @n@n&4Type: &c/warn (Nick) (Reason)"
   usageKick: "&cIncorrect usage @n@n&4Type: &c/kick (Nick) (Reason)"
@@ -231,6 +236,7 @@ Messages:
   noHistoric: "&cThis player don't has historic"
   noReports: "&cNot exists reports to view"
   numbersOnly: "&cUse numbers only"
+  waitDelayToReport: "&cWait &e{time} &cto report again!"
 
   #
   # Success messages
@@ -239,6 +245,7 @@ Messages:
   warnStaff: "&cThe player &4{nick} &fwarned with success"
   playerReported: "&aThe player {nick} reported with success"
   playerKicked: "&aThe player {nick} has been kicked with success"
+  reportsCleared: "&aAll reports have been cleared"
 
   #
   # In-game messages

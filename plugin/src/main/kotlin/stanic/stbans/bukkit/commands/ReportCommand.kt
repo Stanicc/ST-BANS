@@ -9,6 +9,7 @@ import stanic.stbans.utils.Messages
 import stanic.stbans.utils.TimeUtils
 import stanic.stutils.bukkit.command.command
 import stanic.stutils.bukkit.message.send
+import java.util.concurrent.TimeUnit
 
 /**
  *
@@ -27,6 +28,15 @@ class ReportCommand {
         if (args.size < 2) {
             sender.send(Messages().get("usageReport"))
             return@command
+        }
+
+        if (Main.instance.reportDelay.containsKey(sender.name)) {
+            if (Main.instance.reportDelay[sender.name]!! > System.currentTimeMillis()) {
+                sender.send(Messages().get("waitDelayToReport").replace("{time}", TimeUtils().getTime(Main.instance.reportDelay[sender.name]!! - System.currentTimeMillis())))
+                return@command
+            }
+
+            Main.instance.reportDelay.remove(sender.name)
         }
 
         var reason = ""
@@ -64,6 +74,8 @@ class ReportCommand {
 
             message.sendToDiscord(Main.settings.getString("Discord.channels.reportsChannel"))
         }
+
+        Main.instance.reportDelay[sender.name] = System.currentTimeMillis() + TimeUnit.MILLISECONDS.convert(Main.settings.getInt("Config.delayToReportAgain").toLong(), TimeUnit.SECONDS)
     }
 
 }

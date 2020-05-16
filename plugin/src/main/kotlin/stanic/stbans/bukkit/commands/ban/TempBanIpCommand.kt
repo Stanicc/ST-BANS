@@ -1,13 +1,13 @@
 package stanic.stbans.bukkit.commands.ban
 
 import org.bukkit.Bukkit
+import org.bukkit.entity.Player
 import stanic.stbans.Main
 import stanic.stbans.controller.PunishController
 import stanic.stbans.factory.model.Punishment
 import stanic.stbans.utils.Messages
 import stanic.stbans.utils.TimeUtils
 import stanic.stutils.bukkit.command.command
-import stanic.stutils.bukkit.command.isPlayer
 import stanic.stutils.bukkit.message.send
 import java.util.concurrent.TimeUnit
 
@@ -56,7 +56,7 @@ class TempBanIpCommand {
             }
         )
 
-        if (!sender.isPlayer()) {
+        if (sender !is Player) {
             sender.send("§cYou banned the player ${args[0]} address")
         }
     }

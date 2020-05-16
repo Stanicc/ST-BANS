@@ -30,18 +30,18 @@ class Main: JavaPlugin() {
     val punishment = HashMap<Int, Punishment>()
     val playerInfo = HashMap<String, PlayerInfo>()
 
+    val reportDelay = HashMap<String, Long>()
+
     lateinit var db: IDatabase
 
     override fun onLoad() {
-        instance = this
-
-        loadSettings().apply {
-            if (settings.get("Config.appConnectPort") == null) settings.set("Config.appConnectPort", 4567)
-        }
+        loadSettings()
         RestService().startService()
     }
 
     override fun onEnable() {
+        instance = this
+
         Database().start()
         Database().loadData()
 
@@ -121,7 +121,6 @@ class Main: JavaPlugin() {
         var table = "stbans"
 
         lateinit var instance: Main
-            private set
 
         lateinit var settings: FileConfiguration
             internal set

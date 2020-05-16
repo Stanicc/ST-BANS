@@ -9,8 +9,8 @@ import stanic.stbans.bukkit.events.InventoryInteractListener
 import stanic.stbans.factory.model.PlayerInfo
 import stanic.stbans.factory.model.Punishment
 import stanic.stutils.bukkit.message.replaceColor
-import stanic.stutils.server.utils.ItemBuilder
-import stanic.stutils.server.utils.SkullUtils
+import stanic.stutils.bukkit.utils.ItemBuilder
+import stanic.stutils.bukkit.utils.SkullUtils
 
 class Menus {
 

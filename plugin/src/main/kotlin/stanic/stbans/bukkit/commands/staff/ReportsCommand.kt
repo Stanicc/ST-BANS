@@ -16,7 +16,7 @@ import stanic.stutils.bukkit.message.send
 
 class ReportsCommand {
 
-    fun run(m: Main) = m.command("reports") { sender, _ ->
+    fun run(m: Main) = m.command("reports") { sender, args ->
         if (sender !is Player) sender.send("§cThis command is allowed in-game only")
         else {
             if (!sender.hasPermission("stbans.reportadm")) {
@@ -24,11 +24,15 @@ class ReportsCommand {
                 return@command
             }
 
-            if (PlayerInfo.all.isNotEmpty()) {
-                Menus.pag = 1
-                Menus.openReportsMenu(sender)
+            if (args.isEmpty()) {
+                if (PlayerInfo.all.isNotEmpty()) {
+                    Menus.pag = 1
+                    Menus.openReportsMenu(sender)
+                } else sender.send(Messages().get("noReports"))
+            } else if (args[0] == "clear") {
+                PlayerInfo.all.forEach { it.reports.clear() }
+                sender.send(Messages().get("reportsCleared"))
             }
-            else sender.send(Messages().get("noReports"))
         }
     }
 

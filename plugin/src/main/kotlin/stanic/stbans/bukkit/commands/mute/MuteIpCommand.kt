@@ -1,25 +1,25 @@
 package stanic.stbans.bukkit.commands.mute
 
 import org.bukkit.Bukkit
+import org.bukkit.entity.Player
 import stanic.stbans.Main
 import stanic.stbans.controller.PunishController
 import stanic.stbans.factory.model.Punishment
 import stanic.stbans.utils.Messages
 import stanic.stbans.utils.TimeUtils
 import stanic.stutils.bukkit.command.command
-import stanic.stutils.bukkit.command.isPlayer
 import stanic.stutils.bukkit.message.send
 
 class MuteIpCommand {
 
-    fun run(m: Main) = m.command("mute") { sender, args ->
+    fun run(m: Main) = m.command("muteip") { sender, args ->
         if (!sender.hasPermission("stbans.mutecmd")) {
             sender.send(Messages().get("noPerm"))
             return@command
         }
 
         if (args.size < 2) {
-            sender.send(Messages().get("usageMute"))
+            sender.send(Messages().get("usageMuteIp"))
             return@command
         }
 
@@ -33,7 +33,7 @@ class MuteIpCommand {
         val punish = Punishment(
             args[0],
             sender.name,
-            "Mute",
+            "MuteIp",
             reason,
             TimeUtils.getDate(),
             TimeUtils.getHour(),
@@ -46,7 +46,7 @@ class MuteIpCommand {
 
         PunishController().applyPunishment(args[0], id)
 
-        if (!sender.isPlayer()) {
+        if (sender !is Player) {
             sender.send("§cYou muted the player ${args[0]} address")
         }
     }

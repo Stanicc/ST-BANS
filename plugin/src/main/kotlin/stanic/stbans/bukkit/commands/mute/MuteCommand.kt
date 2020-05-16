@@ -1,12 +1,12 @@
 package stanic.stbans.bukkit.commands.mute
 
+import org.bukkit.entity.Player
 import stanic.stbans.Main
 import stanic.stbans.controller.PunishController
 import stanic.stbans.factory.model.Punishment
 import stanic.stbans.utils.Messages
 import stanic.stbans.utils.TimeUtils
 import stanic.stutils.bukkit.command.command
-import stanic.stutils.bukkit.command.isPlayer
 import stanic.stutils.bukkit.message.send
 
 /**
@@ -50,7 +50,7 @@ class MuteCommand {
 
         PunishController().applyPunishment(args[0], id)
 
-        if (!sender.isPlayer()) {
+        if (sender !is Player) {
             sender.send("§cYou muted the player ${args[0]}")
         }
     }
