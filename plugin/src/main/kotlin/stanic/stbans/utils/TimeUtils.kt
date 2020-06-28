@@ -12,10 +12,10 @@ class TimeUtils {
     private val daysString = Main.settings.getString("Config.timeFormat.days")!!
 
     fun getTime(time: Long): String {
-        val varSeconds = time / 1000L % 60L
-        val varMinutes = time / 60000L % 60L
-        val varHours = time / 3600000L % 24L
-        val varDays = time / 86400000L % 7L
+        val varSeconds = (time / 1000L) % 60L
+        val varMinutes = (time / 60000L) % 60L
+        val varHours = (time / 3600000L) % 24L
+        val varDays = time / (60*60*24*1000)
 
         val seconds = varSeconds.toString().replace("-".toRegex(), "")
         val minutes = varMinutes.toString().replace("-".toRegex(), "")

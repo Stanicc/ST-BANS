@@ -9,49 +9,45 @@ import stanic.stbans.utils.Messages
 import stanic.stbans.utils.replaceInfo
 import stanic.stutils.bukkit.event.event
 
-class PlayerConnectListener {
+fun Main.registerPlayerConnectListener() = event<PlayerJoinEvent> { event ->
+    val player = event.player
 
-    fun onConnect(m: Main) = m.event<PlayerJoinEvent> { event ->
-        val player = event.player
-
-        if (!Main.instance.playerInfo.containsKey(player.name)) {
-            val playerInfo = PlayerInfo(player.name, 0, ArrayList())
-            Main.instance.playerInfo[player.name] = playerInfo
-        }
+    if (!Main.instance.playerInfo.containsKey(player.name)) {
+        val playerInfo = PlayerInfo(player.name, 0, ArrayList())
+        Main.instance.playerInfo[player.name] = playerInfo
     }
+}
 
-    fun onLogin(m: Main) = m.event<PlayerLoginEvent> { event ->
-        val player = event.player
+fun Main.registerPlayerLoginListener() = event<PlayerLoginEvent> { event ->
+    val player = event.player
 
-        if (PunishFactory().hasPunishment(player.name)) {
-            val info = PunishFactory().getPunish(player.name, "Ban") ?: return@event
+    if (PunishFactory().hasPunishment(player.name)) {
+        val info = PunishFactory().getPunish(player.name, "Ban") ?: return@event
 
-            info.time?.run {
-                if (System.currentTimeMillis() >= this) {
-                    PunishFactory().removePunishment(info.id)
-                    event.result = PlayerLoginEvent.Result.KICK_BANNED
-                    event.kickMessage = Messages().get("punishRepealedKick").replaceInfo(info)
-                    return@event
-                }
+        info.time?.run {
+            if (System.currentTimeMillis() >= this) {
+                PunishFactory().removePunishment(info.id)
+                event.result = PlayerLoginEvent.Result.KICK_BANNED
+                event.kickMessage = Messages().get("punishRepealedKick").replaceInfo(info)
+                return@event
             }
-
-            event.result = PlayerLoginEvent.Result.KICK_BANNED
-            event.kickMessage = Messages().get("kickBanned").replaceInfo(info)
-        } else if (player.address != null && PunishFactory().hasPunishmentAddress(player.address.hostString) != null) {
-            val info = PunishFactory().hasPunishmentAddress(player.address.hostString)!!
-
-            info.time?.run {
-                if (System.currentTimeMillis() >= this) {
-                    PunishFactory().removePunishment(info.id)
-                    event.result = PlayerLoginEvent.Result.KICK_BANNED
-                    event.kickMessage = Messages().get("punishRepealedKick").replaceInfo(info)
-                    return@event
-                }
-            }
-
-            event.result = PlayerLoginEvent.Result.KICK_BANNED
-            event.kickMessage = Messages().get("kickBanned").replaceInfo(info)
         }
-    }
 
+        event.result = PlayerLoginEvent.Result.KICK_BANNED
+        event.kickMessage = Messages().get("kickBanned").replaceInfo(info)
+    } else if (player.address != null && PunishFactory().hasPunishmentAddress(player.address.hostString) != null) {
+        val info = PunishFactory().hasPunishmentAddress(player.address.hostString)!!
+
+        info.time?.run {
+            if (System.currentTimeMillis() >= this) {
+                PunishFactory().removePunishment(info.id)
+                event.result = PlayerLoginEvent.Result.KICK_BANNED
+                event.kickMessage = Messages().get("punishRepealedKick").replaceInfo(info)
+                return@event
+            }
+        }
+
+        event.result = PlayerLoginEvent.Result.KICK_BANNED
+        event.kickMessage = Messages().get("kickBanned").replaceInfo(info)
+    }
 }

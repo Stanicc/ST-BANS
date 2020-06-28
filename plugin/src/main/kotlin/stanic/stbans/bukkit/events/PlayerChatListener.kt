@@ -9,12 +9,32 @@ import stanic.stbans.utils.replaceInfo
 import stanic.stutils.bukkit.event.event
 import stanic.stutils.bukkit.message.send
 
-class PlayerChatListener {
+fun Main.registerPlayerChatListener() = event<AsyncPlayerChatEvent> { event ->
+    val player = event.player
 
-    fun onChat(m: Main) = m.event<AsyncPlayerChatEvent> { event ->
-        val player = event.player
+    if (PunishFactory().hasPunishment(player.name)) {
+        val info = PunishFactory().getPunish(player.name, "Mute") ?: return@event
 
-        if (PunishFactory().hasPunishment(player.name)) {
+        info.time?.run {
+            if (System.currentTimeMillis() >= this) {
+                PunishFactory().removePunishment(info.id)
+                player.send(Messages().get("punishRepealedChat").replaceInfo(info))
+                event.isCancelled = true
+                return@event
+            }
+        }
+
+        player.send(Messages().get("muteMessage").replaceInfo(info))
+        event.isCancelled = true
+    }
+}
+
+fun Main.registerPlayerExecuteCommandListener() = event<PlayerCommandPreprocessEvent> { event ->
+    val player = event.player
+    val command = event.message
+
+    if (PunishFactory().hasPunishment(player.name)) {
+        if (Main.settings.getStringList("Config.blockedCommands").contains(command)) {
             val info = PunishFactory().getPunish(player.name, "Mute") ?: return@event
 
             info.time?.run {
@@ -29,45 +49,21 @@ class PlayerChatListener {
             player.send(Messages().get("muteMessage").replaceInfo(info))
             event.isCancelled = true
         }
-    }
+    } else if (player.address != null && PunishFactory().hasPunishmentAddress(player.address.hostString) != null) {
+        if (Main.settings.getStringList("Config.blockedCommands").contains(command)) {
+            val info = PunishFactory().hasPunishmentAddress(player.address.hostString)!!
 
-    fun onCommand(m: Main) = m.event<PlayerCommandPreprocessEvent> { event ->
-        val player = event.player
-        val command = event.message
-
-        if (PunishFactory().hasPunishment(player.name)) {
-            if (Main.settings.getStringList("Config.blockedCommands").contains(command)) {
-                val info = PunishFactory().getPunish(player.name, "Mute") ?: return@event
-
-                info.time?.run {
-                    if (System.currentTimeMillis() >= this) {
-                        PunishFactory().removePunishment(info.id)
-                        player.send(Messages().get("punishRepealedChat").replaceInfo(info))
-                        event.isCancelled = true
-                        return@event
-                    }
+            info.time?.run {
+                if (System.currentTimeMillis() >= this) {
+                    PunishFactory().removePunishment(info.id)
+                    player.send(Messages().get("punishRepealedChat").replaceInfo(info))
+                    event.isCancelled = true
+                    return@event
                 }
-
-                player.send(Messages().get("muteMessage").replaceInfo(info))
-                event.isCancelled = true
             }
-        } else if (player.address != null && PunishFactory().hasPunishmentAddress(player.address.hostString) != null) {
-            if (Main.settings.getStringList("Config.blockedCommands").contains(command)) {
-                val info = PunishFactory().hasPunishmentAddress(player.address.hostString)!!
 
-                info.time?.run {
-                    if (System.currentTimeMillis() >= this) {
-                        PunishFactory().removePunishment(info.id)
-                        player.send(Messages().get("punishRepealedChat").replaceInfo(info))
-                        event.isCancelled = true
-                        return@event
-                    }
-                }
-
-                player.send(Messages().get("muteMessage").replaceInfo(info))
-                event.isCancelled = true
-            }
+            player.send(Messages().get("muteMessage").replaceInfo(info))
+            event.isCancelled = true
         }
     }
-
 }

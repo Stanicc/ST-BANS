@@ -5,6 +5,7 @@ import stanic.stbans.Main
 import stanic.stbans.discord.sendToDiscord
 import stanic.stbans.factory.PunishFactory
 import stanic.stbans.utils.Messages
+import stanic.stbans.utils.TimeUtils
 import stanic.stbans.utils.replaceInfo
 import stanic.stutils.bukkit.message.send
 import java.util.concurrent.TimeUnit
@@ -24,10 +25,19 @@ class PunishController {
      */
     fun applyPunishment(p: String, id: Int, typeUnit: TimeUnit? = null) {
         val info = Main.instance.punishment[id]!!
-        val time = if (info.time != null) System.currentTimeMillis() + TimeUnit.MILLISECONDS.convert(info.time!!, typeUnit)  else null
+        val time = if (typeUnit != null) System.currentTimeMillis() + typeUnit.toMillis(info.time!!) else null
 
         info.time = time
         info.isActive = true
+
+        var announceType = "all"
+        when {
+            info.reason.contains("-s") -> announceType = "silent"
+            info.reason.contains("-d") -> announceType = "discord"
+            info.reason.contains("-b") -> announceType = "broadcast"
+        }
+
+        info.reason = info.reason.replace("-s", "").replace("-d", "").replace("-b", "")
 
         Bukkit.getPlayer(p)?.run {
             if (info.type.contains("Ban")) {
@@ -41,7 +51,7 @@ class PunishController {
             send(Messages().get("punishmentAppliedStaff").replaceInfo(info))
         }
 
-        if (Main.settings.getBoolean("Config.alertPunishBroadcast")) {
+        if (Main.settings.getBoolean("Config.alertPunishBroadcast") && announceType == "all" || announceType == "broadcast") {
             Bukkit.getOnlinePlayers().forEach {
                 it.send(
                     Messages().get("playerPunishBroadcast").replaceInfo(info)
@@ -49,12 +59,15 @@ class PunishController {
             }
         }
 
-        val message =
-            "${Main.settings.getString("Discord.channels.punishMessage.title").replace("@n", "\n").replaceInfo(info)}[/title/][/body/]${Main.settings.getString(
-                "Discord.channels.punishMessage.body"
-            ).replace("@n", "\n").replaceInfo(info)}"
+        if (announceType == "all" || announceType == "discord") {
+            val message =
+                "${Main.settings.getString("Discord.channels.punishMessage.title").replace("@n", "\n")
+                    .replaceInfo(info)}[/title/][/body/]${Main.settings.getString(
+                    "Discord.channels.punishMessage.body"
+                ).replace("@n", "\n").replaceInfo(info)}"
 
-        message.sendToDiscord(Main.settings.getString("Discord.channels.punishChannel"))
+            message.sendToDiscord(Main.settings.getString("Discord.channels.punishChannel"))
+        }
 
         PunishFactory().savePunish(info)
     }

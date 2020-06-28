@@ -36,6 +36,20 @@ Database:
 # /tempban Stanic 10 m Reason
 #
 #
+# Historic parameters
+#
+# 1 - Filter only active punishments
+# Example:
+# /verify Stanic 1
+#
+#
+# Punish parameters
+#
+# -s - Apply a silent punishment, no message will be sent about it
+# -d - Apply a punishment with message only in Discord
+# -b - Apply a punishment with message only in broadcast
+#
+#
 # Placeholders:
 #
 # {nick} to player nick
@@ -53,7 +67,8 @@ Database:
 #
 # stbans.bancmd - Allow to use the bans commands (Ban and tempban)
 # stbans.mutecmd - Allow to use the mute commands (Mute and tempmute)
-# stbans.revokecmd - Allow to use the revoke commands (unmute and unban)
+# stbans.unbancmd - Allow to use the unban command
+# stbans.unmutecmd - Allow to use the unban command
 # stbans.warncmd - Allow to use the warn command
 # stbans.reportcmd - Allow to use the report command
 # stbans.kickcmd - Allow to use the kick command
@@ -66,7 +81,7 @@ Database:
 #
 Discord:
   #Enable integration?
-  enable: true
+  enable: false
   #
   # The things below will only work if integration is enabled
   #
@@ -108,7 +123,7 @@ Discord:
 #
 Config:
   #Enable the application integration?
-  enableApp: true
+  enableApp: false
   appConnectPort: 4567
   #Time format messages
   timeFormat:
@@ -165,10 +180,18 @@ Menus:
   reports:
     #Name of the menu
     name: "&8Reports"
-    #Itens in menu
-    itens:
+    #Line where items will start to appear
+    startLine: 2
+    #Line where items will stop appearing
+    endLine: 4
+    #Slot where items will start to appear
+    startSlot: 3
+    #Slot where items will stop appearing
+    endSlot: 7
+    #Items in menu
+    items:
       #The report show item | Don't remove this
-      reportItem:
+      reportsItem:
         #Item name
         name: "&b{nick}"
         #Item lore
@@ -182,12 +205,43 @@ Menus:
         data: 0
         #The skull owner | Don't remove this | If item is not a head set to null
         skullOwner: "null"
+        #Commands that will be executed when clicking
+        commands:
+          - "tp {player}"
+      nextPageItem:
+        name: "&a---->"
+        lore:
+          - ""
+          - "&fClick to go to the next page"
+          - ""
+        id: 1
+        data: 0
+        skullOwner: "null"
+        slot: 50
+      previousPageItem:
+        name: "&a<----"
+        lore:
+          - ""
+          - "&fClick to go to the previous page"
+          - ""
+        id: 1
+        data: 0
+        skullOwner: "null"
+        slot: 48
   #Historic menu
   historic:
     #Name of the menu
     name: "&8Historic"
-    #Itens in menu
-    itens:
+    #Line where items will start to appear
+    startLine: 2
+    #Line where items will stop appearing
+    endLine: 4
+    #Slot where items will start to appear
+    startSlot: 3
+    #Slot where items will stop appearing
+    endSlot: 7
+    #Items in menu
+    items:
       #The historic show item | Don't remove this
       historicItem:
         #Item name
@@ -210,6 +264,85 @@ Menus:
         data: 0
         #The skull owner | Don't remove this | If item is not a head set to null
         skullOwner: "null"
+      nextPageItem:
+        name: "&a---->"
+        lore:
+          - ""
+          - "&fClick to go to the next page"
+          - ""
+        id: 1
+        data: 0
+        skullOwner: "null"
+        slot: 50
+      previousPageItem:
+        name: "&a<----"
+        lore:
+          - ""
+          - "&fClick to go to the previous page"
+          - ""
+        id: 1
+        data: 0
+        skullOwner: "null"
+        slot: 48
+  #Revoke menu
+  revoke:
+    #Name of the menu
+    name: "&8Revoke"
+    #Line where items will start to appear
+    startLine: 2
+    #Line where items will stop appearing
+    endLine: 4
+    #Slot where items will start to appear
+    startSlot: 3
+    #Slot where items will stop appearing
+    endSlot: 7
+    #Items in menu
+    items:
+      #The revoke show item
+      revokeItem:
+        #Item name
+        name: "&b{date} &8| &b{hour}"
+        #Item lore
+        lore:
+          - ""
+          - "&fType: &7{type}"
+          - "&fID: &7{id}"
+          - "&fActive: &7{active}"
+          - ""
+          - "&fStaff: &7{staff}"
+          - "&fTime: &7{time}"
+          - ""
+          - "&fReason: &7{reason}"
+          - ""
+          - "&eClick to revoke"
+          - ""
+        #Item id
+        id: 1
+        #Item data
+        data: 0
+        #The skull owner | Don't remove this | If item is not a head set to null
+        skullOwner: "null"
+      nextPageItem:
+        name: "&a---->"
+        lore:
+          - ""
+          - "&fClick to go to the next page"
+          - ""
+        id: 1
+        data: 0
+        skullOwner: "null"
+        slot: 50
+      previousPageItem:
+        name: "&a<----"
+        lore:
+          - ""
+          - "&fClick to go to the previous page"
+          - ""
+        id: 1
+        data: 0
+        skullOwner: "null"
+        slot: 48
+
 #
 # Messages
 #
@@ -222,18 +355,19 @@ Messages:
   usageBan: "&cIncorrect usage @n@n&4Type: &c/ban (Nick) (Reason)"
   usageTempban: "&cIncorrect usage @n@n&4Type: &c/tempban (Nick) (Time) (Time type) (Reason)"
   usageTempbanIp: "&cIncorrect usage @n@n&4Type: &c/tempbanip (Nick) (Time) (Time type) (Reason)"
-  usageUnban: "&cIncorrect usage @n@n&4Type: &c/unban (id)"
+  usageUnban: "&cIncorrect usage @n@n&4Type: &c/unban (id or nick)"
   usageMute: "&cIncorrect usage @n@n&4Type: &c/mute (Nick) (Reason)"
   usageMuteIp: "&cIncorrect usage @n@n&4Type: &c/muteip (Nick) (Reason)"
   usageTempmute: "&cIncorrect usage @n@n&4Type: &c/tempmute (Nick) (Time) (Time type) (Reason)"
   usageTempmuteIp: "&cIncorrect usage @n@n&4Type: &c/tempmuteip (Nick) (Time) (Time type) (Reason)"
-  usageUnmute: "&cIncorrect usage @n@n&4Type: &c/unmute (id)"
+  usageUnmute: "&cIncorrect usage @n@n&4Type: &c/unmute (id or nick)"
   usageWarn: "&cIncorrect usage @n@n&4Type: &c/warn (Nick) (Reason)"
   usageKick: "&cIncorrect usage @n@n&4Type: &c/kick (Nick) (Reason)"
   usageReport: "&cIncorrect usage @n@n&4Type: &c/report (Nick) (Reason)"
   usageVerify: "&cIncorrect usage @n@n&4Type: &c/verify (Nick) &8- &7Optional: &c(Filter) @nUse: 1 to filter only actives"
   playerOffline: "&cPlayer offline"
   noHistoric: "&cThis player don't has historic"
+  noPunishments: "&cThis player don't has active punishments"
   noReports: "&cNot exists reports to view"
   numbersOnly: "&cUse numbers only"
   waitDelayToReport: "&cWait &e{time} &cto report again!"

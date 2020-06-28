@@ -1,5 +1,6 @@
 package stanic.stbans.factory
 
+import org.bukkit.scheduler.BukkitRunnable
 import stanic.stbans.Main
 import stanic.stbans.factory.model.Punishment
 
@@ -61,35 +62,45 @@ class PunishFactory {
      *
      *  @param [p] return the punishment
      */
-    fun savePunish(p: Punishment) {
-        val c = Main.instance.db
-        c.open()
+    fun savePunish(p: Punishment) = object : BukkitRunnable() {
+        override fun run() {
+            val c = Main.instance.db
+            c.open()
 
-        val rs = c.statement!!.executeQuery("select * from ${Main.table} where id='${p.id}'")
-        if (rs.next()) c.statement!!.executeUpdate("update ${Main.table} set player='${p.nick}', staff='${p.staff}', type='${p.type}', reason='${p.reason}', date='${p.date}', hour='${p.hour}', time='${p.time}', id='${p.id}', address='${p.address}' active='${if (p.isActive) 1 else 0}'")
-        else c.statement!!.execute("insert into ${Main.table} (player, staff, type, reason, date, hour, time, id, address, active) values ('${p.nick}', '${p.staff}', '${p.type}', '${p.reason}', '${p.date}', '${p.hour}', '${p.time}', '${p.id}', '${p.address}', '${if (p.isActive) 1 else 0}')")
-        c.close()
-    }
+            val rs = c.statement!!.executeQuery("SELECT * FROM ${Main.table} WHERE id='${p.id}'")
+            if (rs.next()) c.statement!!.executeUpdate("UPDATE ${Main.table} SET player='${p.nick}', staff='${p.staff}', type='${p.type}', reason='${p.reason}', date='${p.date}', hour='${p.hour}', time='${p.time}', address='${p.address}', active='${if (p.isActive) 1 else 0}' WHERE id='${p.id}'")
+            else c.statement!!.execute("INSERT INTO ${Main.table} (player, staff, type, reason, date, hour, time, id, address, active) VALUES ('${p.nick}', '${p.staff}', '${p.type}', '${p.reason}', '${p.date}', '${p.hour}', '${p.time}', '${p.id}', '${p.address}', '${if (p.isActive) 1 else 0}')")
+
+            rs.close()
+            c.close()
+            cancel()
+        }
+    }.runTaskAsynchronously(Main.instance)!!
 
     /**
      * This function is to deactivate the punishment
      *
      * @param [id] return the punishment id
      */
-    fun removePunishment(id: Int) {
-        val p = getPunishByID(id)!!
+    fun removePunishment(id: Int) = object : BukkitRunnable() {
+        override fun run() {
+            val p = getPunishByID(id)!!
 
-        val c = Main.instance.db
-        c.open()
-        val rs = c.statement!!.executeQuery("select * from ${Main.table} where id='$id'")
-        if (rs.next()) c.statement!!.execute("delete from ${Main.table} where id='$id'")
-        c.close()
+            val c = Main.instance.db
+            c.open()
+            val rs = c.statement!!.executeQuery("SELECT * FROM ${Main.table} WHERE id='$id'")
+            if (rs.next()) c.statement!!.execute("DELETE FROM ${Main.table} WHERE id='$id'")
 
-        p.isActive = false
-        p.time = null
+            rs.close()
+            c.close()
 
-        savePunish(p)
-    }
+            p.isActive = false
+            p.time = null
+
+            savePunish(p)
+            cancel()
+        }
+    }.runTaskAsynchronously(Main.instance)!!
 
     /**
      *

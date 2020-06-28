@@ -35,7 +35,9 @@ repositories {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
-    implementation "net.dv8tion:JDA:4.1.1_104"
+    implementation("net.dv8tion:JDA:4.1.1_104") {
+        exclude module: 'opus-java'
+    }
     implementation "com.sparkjava:spark-kotlin:1.0.0-alpha"
     compileOnly "org.spigotmc:spigot-api:1.8.8-R0.1-SNAPSHOT"
     implementation files('C:\\Users\\Gabi Stanic\\PROJETOS\\IMPORTS\\ST-Utils.jar', 'C:\\Users\\Gabi Stanic\\PROJETOS\\IMPORTS\\ST-Utils.jar')
