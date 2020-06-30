@@ -6,6 +6,9 @@ import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder
 import net.dv8tion.jda.api.sharding.ShardManager
 import stanic.stbans.Main
 import stanic.stbans.discord.DiscordBot.Companion.dc
+import stanic.stbans.discord.commands.ban.*
+import stanic.stbans.discord.commands.mute.*
+import stanic.stbans.discord.commands.registerInfoCommand
 
 class DiscordBot {
 
@@ -20,6 +23,21 @@ class DiscordBot {
                 .setToken(Main.settings.getString("Discord.token"))
                 .setActivity(Activity.playing(Main.settings.getString("Discord.game")))
                 .build().apply {
+                    shards.first().run {
+                        registerBanCommand()
+                        registerBanIpCommand()
+                        registerTempBanCommand()
+                        registerTempBanIpCommand()
+                        registerUnbanCommand()
+
+                        registerMuteCommand()
+                        registerMuteIpCommand()
+                        registerTempMuteCommand()
+                        registerTempMuteIpCommand()
+                        registerUnmuteCommand()
+
+                        registerInfoCommand()
+                    }
                     enabled = true
                 }
     }

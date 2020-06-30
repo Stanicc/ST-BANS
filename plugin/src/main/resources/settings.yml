@@ -82,6 +82,8 @@ Database:
 Discord:
   #Enable integration?
   enable: false
+  #Bot prefix
+  prefix: "!"
   #
   # The things below will only work if integration is enabled
   #
@@ -371,6 +373,29 @@ Messages:
   noReports: "&cNot exists reports to view"
   numbersOnly: "&cUse numbers only"
   waitDelayToReport: "&cWait &e{time} &cto report again!"
+
+  #
+  # Discord
+  #
+  onlyNumbersDiscord: ":x: | Use only numbers"
+  noPermDiscord: ":x: | {mention}, u don't have permission to use this"
+  usageBanDiscord: ":x: | Use !ban (nick) (reason)"
+  usageBanIpDiscord: ":x: | Use !banip (nick) (reason)"
+  usageTempBanDiscord: ":x: | Use !tempban (nick) (time) (time type) (reason)"
+  usageTempBanIpDiscord: ":x: | Use !tempbanip (nick) (time) (time type) (reason)"
+  usageUnBanDiscord: ":x: | Use !unban (id)"
+  usageMuteDiscord: ":x: | Use !mute (nick) (reason)"
+  usageMuteIpDiscord: ":x: | Use !muteip (nick) (reason)"
+  usageTempMuteDiscord: ":x: | Use !tempmute (nick) (time) (time type) (reason)"
+  usageTempMuteIpDiscord: ":x: | Use !tempmuteip (nick) (time) (time type) (reason)"
+  usageUnMuteDiscord: ":x: | Use !unmute (id)"
+  punishRepealedDiscord: "{mention}, the punish {id} has repealed"
+  punishmentAppliedTitle: "Player {nick} received a punishment"
+  punishmentAppliedDescription: "**Information** \n\nStaff: **{staff}** \nID: **{id}** \nType: **{type}** \nDate: **{date}** | **{hour}** \nDuration: **{time}** \n\nReason: **{reason}**"
+  punishNotFoundDiscord: ":x: | Punishment does not exists"
+  usageInfoDiscord: ":x: | Use !info (id)"
+  punishmentInfoTitle: "Punishment {id}"
+  punishmentInfoDescription: "**Information** \n\nStaff: **{staff}** \nID: **{id}** \nType: **{type}** \nDate: **{date}** | **{hour}** \nDuration: **{time}** \nActive: **{active}** \n\nReason: **{reason}**"
 
   #
   # Success messages
